@@ -16,12 +16,11 @@ function draw() {
    // the first number is the X value (distance from the left border)
    // the second number is the Y value (distance from the top border)
 
-
    // line() draws a line on the display
+stroke(0);
+   line(0,10,100,10);
+   line(0,20,100,20);
+   line(0,30,100,30);
 
-   // line(0,0,99,99);
-line(   random(100),random(100),   random(100),random(100)   );
-   // use the menu Help > Reference to learn more about
-   // point() and line()
-
+   // line(random(100),random(100),random(100),random(100));
 }

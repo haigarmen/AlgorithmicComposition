@@ -8,12 +8,12 @@ let strokeCol = 254;
 let strokeChange = -1;
 
 function clearBackground() {
-  background(255);
+  background(0);
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    background(208);
+    background(0);
     smooth();
     // noLoop();
     noFill();
