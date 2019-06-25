@@ -1,0 +1,40 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  border: 1px solid rgb(200, 200, 200);
+  position: absolute;
+  left: 1.5%;
+  top: 1.5%;
+  background-color: white;
+  color: rgb(120, 120, 120);
+  padding: 6px 10px;
+  font-size: 8pt;
+  cursor: pointer;
+}
+button:hover {
+  background: rgb(200, 200, 200);
+  color: white;
+}
+button:focus {
+  outline: 0;
+}
+
+#caption_box {
+  position: absolute;
+  margin: 10px;
+  font-size: 8pt;
+  bottom: 0px;
+  right: 0px;
+}
+#caption_box {
+  position: absolute;
+  right: 1.5%;
+  bottom: 1.5%;
+  color: rgb(20, 20, 20);
+  font-size: 10pt;
+  bottom: 0px;
+  right: 0px;
+}
