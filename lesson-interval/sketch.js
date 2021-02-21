@@ -6,9 +6,10 @@ var pickFrames;
 var x = 0;
 var isPlaying = false;
 var interval;
+var note;
 
-let colourA = color(218, 165, 32);
-let colourB = color(72, 61, 139);
+// let colourA = color(218, 165, 32);
+// let colourB = color(72, 61, 139);
 
 function setup() {
     createCanvas(windowWidth, windowHeight-100);
@@ -24,22 +25,22 @@ function draw() {
     background(20);
     fill(255, 30);
     stroke(255, 80);
-    line(x, 0, x, height)
-    x +=3;
-    if (x > width) {
-        x = 0;
+    if (isPlaying) {
+        drawLine();
     }
+    // note = mouseX;
+
 }
 
 function togglePlay() {
     if (getAudioContext().state !== 'running') {
     	getAudioContext().resume();
-        interval = setInterval(makeNote,200);
+        interval = setInterval(makeNote,160);
         text('playing audio', width/2, height/2);
 		button.html("Stop");
         isPlaying = true;
 	} else {
-        getAudioContext().close();
+        getAudioContext().suspend();
         clearInterval(interval);
         text('click Play button to start', width/2, height/2);
         button.html("Play");
@@ -48,10 +49,18 @@ function togglePlay() {
 }
 
 function makeNote() {
-    console.log(frameCount);
+    // console.log(frameCount);
     pickFrames.html(frameCount);
 
+    note = random(['E4', 'G4', 'A4', 'B4', 'D4']);
     var synth = new p5.MonoSynth();
+    synth.play(note, 0.3, 0, 0.1);
+}
 
-    synth.play('A4', 0.5, 0, 0.2);
+function drawLine() {
+    line(x, 0, x, height)
+    x +=3;
+    if (x > width) {
+        x = 0;
+    }
 }

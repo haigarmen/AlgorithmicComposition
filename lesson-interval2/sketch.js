@@ -5,7 +5,7 @@
 var pickFrames;
 var x = 0;
 var interval;
-var isPlaying = False;
+var isPlaying = FALSE;
 
 function setup() {
     createCanvas(windowWidth, windowHeight-100);
@@ -29,13 +29,13 @@ function draw() {
 }
 
 function togglePlay() {
-    if (isPlaying = True) {
+    if (isPlaying = TRUE) {
         clearInterval(interval); // this stops the interval we created
-        isPlaying = False;
+        isPlaying = FALSE;
         button.html('Play');
     } else {
         interval = setInterval(makeNote,500);
-        isPlaying = True;
+        isPlaying = TRUE;
         button.html('Stop');
     }
 }

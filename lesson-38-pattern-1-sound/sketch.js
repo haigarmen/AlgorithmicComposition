@@ -1,7 +1,7 @@
 // Radial Pattern 1 with Sound
 
 var frames = 240;
-var num = 30; // try numbers up to 40
+var num = 40; // try numbers up to 40
 var theta = 0;
 var wave;
 var frequency;
@@ -13,6 +13,8 @@ function setup() {
 
     wave = new p5.Oscillator();
     wave.setType('sine');
+    wave1 = new p5.Oscillator();
+    wave1.setType('sine');
 }
 
 function draw() {
@@ -28,8 +30,8 @@ function draw() {
         x = map(sin(theta), -1, 1, sz, width * .2);
 
         // change the frequency of synth
-        console.log(x);
-        wave.freq(x/1.5);
+        console.log(offSet);
+        // wave.freq(x/.5);
 
         translate(x, 0);
         push();
@@ -43,6 +45,8 @@ function draw() {
         }
         pop();
         pop();
+        wave1.freq(offSet*100);
+
     }
     theta += TWO_PI / frames;
 }
@@ -50,14 +54,17 @@ function draw() {
 function togglePlay() {
 	if (!playing) {
         loop();
-		wave.start();
+		// wave.start();
 		wave.amp(1, .25);
+        wave1.start();
+		wave1.amp(1, .25);
 		// second number fades in the amplitude by the duration specified
 		playing = true;
         console.log("Start Loop");
 	} else {
         noLoop();
 		wave.amp(0, .25);
+        wave1.amp(0, .25);
 		playing = false;
         console.log("Stop Loop");
 
