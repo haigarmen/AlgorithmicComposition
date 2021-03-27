@@ -1,6 +1,6 @@
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    background('#6AA21E');
+    background('#86a9e0');
     smooth();
     noStroke();
     noLoop();
@@ -17,7 +17,7 @@ function draw(){
               // but usually pick a random gray color
               fill(random(100, 200),150);
             }
-        rect(x, y, 30, 30);
+        ellipse(x+20, y+20, 40, 40);
         y = y + 40;
       }
       x = x + 40;

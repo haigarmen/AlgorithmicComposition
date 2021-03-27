@@ -1,6 +1,6 @@
 var step = 10;
 var lastX = -10;
-var radius = 200;
+var radius = 50;
 let lastY;
 let middle;
 let y;
@@ -11,7 +11,7 @@ function setup() {
     smooth();
     noLoop();
     noFill();
-    strokeWeight(5);
+    strokeWeight(.5);
 }
 
 function draw() {
@@ -20,13 +20,14 @@ function draw() {
     centY = height / 2;
     stroke(0, 30);
     noFill();
-    ellipse(centX, centY, radius * 2, radius * 2);
+    // ellipse(centX, centY, radius * 2, radius * 2);
 
     stroke('red');
-    for (ang = 0; ang <= 360; ang += 5) {
+    for (ang = 0; ang <= 8000; ang += 2) {
+        radius += 0.12;
         var rad = radians(ang);
         x = centX + (radius * cos(rad));
         y = centY + (radius * sin(rad));
-        ellipse(x, y, 6, 6);
+        ellipse(x, y, random(30),random(30));
     }
 }

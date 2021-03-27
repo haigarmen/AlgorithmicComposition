@@ -1,17 +1,20 @@
-var r = 0;
-
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    background(10);
+    background(200);
     smooth();
     noStroke();
+    noLoop();
 }
 
 function draw(){
-    translate(width/2, height/2);
-    fill(255);
-    rotate(r);
-    var circle_size = random(5, 15);
-    ellipse(100 + r, 10, circle_size, circle_size);
-    r = r + 0.2;
+    var x = 0;
+    while (x < width) {
+      var y = 0;
+      while (y < height) {
+        fill(random(180,255),random(80,100),random(80,100));
+        rect(x, y, 60, 60);
+        y = y + 62;
+      }
+      x = x + 62;
+    }
 }

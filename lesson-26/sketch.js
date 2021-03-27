@@ -1,7 +1,6 @@
-// Using the Noise function to create a random line
-
 var step = 10;
 var lastX = -10;
+var radius = 200;
 let lastY;
 let middle;
 let y;
@@ -12,22 +11,22 @@ function setup() {
     smooth();
     noLoop();
     noFill();
+    strokeWeight(5);
 }
 
 function draw() {
-    var ynoise = random(10);
     stroke(20, 50, 70);
-    middle = height / 2;
-    line(0, middle, width, height / 2);
+    centX = width / 2;
+    centY = height / 2;
+    stroke(0, 30);
+    noFill();
+    ellipse(centX, centY, radius * 2, radius * 2);
 
     stroke('red');
-    for (i = 0; i <= width; i += 3) {
-        y = middle - 40 + noise(ynoise) * 80;
-        console.log(y);
-        line(i, y, lastX, lastY);
-        // line(i, height/2, lastX, lastY);
-        lastX = i;
-        lastY = y;
-        ynoise += 0.1;
+    for (ang = 0; ang <= 360; ang += 5) {
+        var rad = radians(ang);
+        x = centX + (radius * cos(rad));
+        y = centY + (radius * sin(rad));
+        ellipse(x, y, 6, 6);
     }
 }

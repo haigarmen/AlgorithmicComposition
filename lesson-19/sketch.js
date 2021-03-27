@@ -8,6 +8,7 @@ function setup() {
 }
 
 function draw(){
+    translate(width/2, height/2);
     fill(255);
     rotate(r);
     var circle_size = random(5, 15);

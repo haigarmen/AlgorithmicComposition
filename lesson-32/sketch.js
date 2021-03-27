@@ -1,56 +1,45 @@
-// Using FFT with a Radial Visualization
+// Creating Sound on MousePosition and visualize
 
-var song;
-var button;
-var fft;
-var barWidth;
-
-var ampHistory = [];
-
-function preload() {
-    song = loadSound("../audio/drum-loop-120-bpm.mp3");
-}
+var synth;
+var sloop;
+var freq = 1000;
+var velocity = 0.7;
+var lastX, lastY;
 
 function setup() {
     createCanvas(windowWidth, windowHeight - 100);
-    angleMode(DEGREES);
-    colorMode(HSB);
-    slider = createSlider(0, 1, 0.5, 0.01);
-    button = createButton("Play");
-    button.mousePressed(togglePlay);
-    // song.loop();
-    fft = new p5.FFT(.6, 64);
-    barWidth = width / 64;
-}
-
-function togglePlay() {
-    if (!song.isPlaying()) {
-        song.loop();
-        button.html("Pause");
-    } else {
-        song.stop();
-        button.html("Play");
-    }
+    textAlign(CENTER, CENTER);
+    colorMode(HSB, 255);
+    synth = new p5.PolySynth();
+    lastX = width / 2;
+    lastY = height / 2;
 }
 
 function draw() {
-    background(0);
-    song.setVolume(slider.value());
-    var spectrum = fft.analyze()
-    translate(width / 2, height / 2)
-    beginShape();
-    for (var i = 0; i < spectrum.length; i++) {
-        var angle = map(i, 0, spectrum.length, 0, 360);
-        var amp = spectrum[i];
-        var r = map(amp, 0, 256, 20, 250);
-        fill(i, 255, 255);
-        var x = r * cos(angle);
-        var y = r * sin(angle);
-        stroke(i * 5, 255, 255);
-        line(0, 0, x, y);
-        vertex(x, y);
-        //var y = map(amp, 0, 256, height, 0);
-        //rect(i * w, y, w - 2, height - y);
+    background(245);
+    var hue = map(freq, 400, 2000, 0, 255);
+    var diameter = map(velocity, 0.1, 1, height / 20, height / 2);
+    noStroke();
+    fill(hue, 255, 255);
+    ellipse(lastX, lastY, diameter, diameter);
+
+    fill(30);
+    text("Pitch (Hz): " + freq.toFixed(2) + ", Velocity: " + velocity.toFixed(2), width / 2, height - height / 10);
+}
+
+function touchStarted() {
+    lastX = mouseX;
+    lastY = mouseY;
+    freq = map(lastX, 0, width, 400, 2000); //random(50, 70);
+    velocity = map(height - lastY, 0, height, 0.1, 1); //random(0.5, 1);
+    // Play synth
+    if (getAudioContext().state !== 'running') {
+        getAudioContext().resume();
     }
-    endShape();
+    synth.noteAttack(freq, velocity, 0);
+}
+
+function touchEnded() {
+    // Stop synth
+    synth.noteRelease(freq, 0);
 }

@@ -1,26 +1,30 @@
+// Create a jagged line using random
+
+var step = 10;
+var lastX = -10;
+let lastY;
+let middle;
+var y = 50;
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    background('#86a9e0');
+    background(208);
     smooth();
-    noStroke();
     noLoop();
+    noFill();
 }
 
-function draw(){
-    var x = 0;
-    while (x < width) {
-      var y = 0;
-      while (y < height) {
-          if (random(100) < 1 ) {
-              fill(255, 0, 0, random(80));
-              rect(x+20, y+20, 40, 40);
-            } else {
-              // but usually pick a random gray color
-              fill(random(150, 255), random(80));
-              ellipse(x+20, y+20, random(40), random(40));
-            }
-        y = y + 20;
-      }
-      x = x + 20;
+function draw() {
+    stroke(20, 50, 70);
+    middle = height / 2;
+    line(0, middle, width, height / 2);
+
+    stroke('red');
+    for (i = 0; i <= width; i += 5) {
+        y = random(middle - 30, middle + 30);
+        line(i, y, lastX, lastY);
+        // line(i, height/2, lastX, lastY);
+        lastX = i;
+        lastY = y;
     }
 }

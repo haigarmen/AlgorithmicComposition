@@ -22,8 +22,9 @@ function draw(){
 	smoothMicLevel = lerp(smoothMicLevel, micLevel,0.2);
 	noStroke();
 	fill(255,0,0);
-	ellipse(width/2, height/2, 300, 2000*smoothMicLevel);
-}
+	ellipse(width/2, height/2, 800, 4000*smoothMicLevel);
+	fill(255);
+	ellipse(width/2, height/2, 300, 1000*smoothMicLevel);}
 
 function toggleListen() {
 	if (getAudioContext().state !== 'running') {

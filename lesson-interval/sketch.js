@@ -1,6 +1,7 @@
-// Sometimes you might want to execute code at a different interval than the draw loop. For example: our draw loop is creating a nice smooth animation but we want to have sound/notes played at a much slower pace and more like one every half second (500ms)
+// Sometimes you might want to execute code at a different interval than the draw loop.
+// For example: our draw loop is creating a nice smooth animation
+// but we want to have sound/notes played at a much slower pace and more like one every half second (500ms)
 // we will use setInverval(function, amount of time) to achieve it.
-
 
 var pickFrames;
 var x = 0;
@@ -19,6 +20,9 @@ function setup() {
 
     button = createButton('Play');
     button.mousePressed(togglePlay);
+    slider = createSlider(0,1,0.5,0.01);
+    // slider.position(10, 10);
+    slider.style('width', '80px');
 }
 
 function draw() {
@@ -28,8 +32,8 @@ function draw() {
     if (isPlaying) {
         drawLine();
     }
-    // note = mouseX;
-
+    let val = slider.value();
+    background(val);
 }
 
 function togglePlay() {
@@ -49,12 +53,13 @@ function togglePlay() {
 }
 
 function makeNote() {
-    // console.log(frameCount);
     pickFrames.html(frameCount);
-
     note = random(['E4', 'G4', 'A4', 'B4', 'D4']);
     var synth = new p5.MonoSynth();
     synth.play(note, 0.3, 0, 0.1);
+    print(frameCount);
+
+    // text(note, width/2, height/2);
 }
 
 function drawLine() {
