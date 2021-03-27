@@ -12,14 +12,15 @@ function draw(){
       var y = 0;
       while (y < height) {
           if (random(100) < 1 ) {
-              fill(255, 0, 0, 150);
+              fill(255, 0, 0, random(80));
+              rect(x+20, y+20, 40, 40);
             } else {
               // but usually pick a random gray color
-              fill(random(100, 200),150);
+              fill(random(150, 255), random(80));
+              ellipse(x+20, y+20, random(40), random(40));
             }
-        ellipse(x+20, y+20, 40, 40);
-        y = y + 40;
+        y = y + 20;
       }
-      x = x + 40;
+      x = x + 20;
     }
 }

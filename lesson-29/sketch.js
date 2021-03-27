@@ -1,70 +1,56 @@
-// global variables
+// Using FFT with a Radial Visualization
 
-let num = 10;
-let angNoise, radiusNoise, xNoise, yNoise;
-let angle;
-let radius = 100;
-let strokeCol = 254;
-let strokeChange = -1;
+var song;
+var button;
+var fft;
+var barWidth;
 
-function clearBackground() {
-  background(0);
+var ampHistory = [];
+
+function preload() {
+    song = loadSound("../audio/drum-loop-120-bpm.mp3");
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
-    background(0);
-    smooth();
-    // noLoop();
-    noFill();
-    strokeWeight(0.5);
-    clearBackground();
-    angle = -PI/2;
-    angNoise = random(10);
-    radiusNoise = random(10);
-    xNoise = random(10);
-    yNoise = random(10);
+    createCanvas(windowWidth, windowHeight - 100);
+    angleMode(DEGREES);
+    colorMode(HSB);
+    slider = createSlider(0, 1, 0.5, 0.01);
+    button = createButton("Play");
+    button.mousePressed(togglePlay);
+    // song.loop();
+    fft = new p5.FFT(.6, 64);
+    barWidth = width / 64;
+}
+
+function togglePlay() {
+    if (!song.isPlaying()) {
+        song.loop();
+        button.html("Pause");
+    } else {
+        song.stop();
+        button.html("Play");
+    }
 }
 
 function draw() {
-    radiusNoise += 0.005;
-    radius = (noise(radiusNoise) * 850) +1;
-
-    angNoise += 0.005;
-    angle += (noise(angNoise) * 6) - 3;
-    if (angle > 360) { angle -= 360; }
-    if (angle < 0) { angle += 360; }
-
-    // wobble centre
-    xNoise += 0.01;
-    yNoise += 0.01;
-    let centreX = width/2 + (noise(xNoise) * 100) - 50;
-    let centreY = height/2 + (noise(yNoise) * 100) - 50;
-
-    let rad = radians(angle);
-    let x1 = centreX + (radius * cos(rad));
-    let y1 = centreY + (radius * sin(rad));
-
-    // opposite end of line
-    let opprad = rad + PI;
-    let x2 = centreX + (radius * cos(opprad));
-    let y2 = centreY + (radius * sin(opprad));
-
-    noFill();
-    strokeCol += strokeChange;
-    if (strokeCol > 254) { strokeChange *= -1; }
-    if (strokeCol < 0) { strokeChange *= -1; }
-    stroke(strokeCol, 60);
-    strokeWeight(1);
-    line(x1, y1, x2, y2);
-
-    // disply the wandering centre visible
-    //fill(255,0,0,40);
-    //noStroke();
-    //ellipseMode(CENTER);
-    //ellipse(centreX, centreY, 2, 2);
-}
-
-function mousePressed() {
-  clearBackground();
+    background(0);
+    song.setVolume(slider.value());
+    var spectrum = fft.analyze()
+    translate(width / 2, height / 2)
+    beginShape();
+    for (var i = 0; i < spectrum.length; i++) {
+        var angle = map(i, 0, spectrum.length, 0, 360);
+        var amp = spectrum[i];
+        var r = map(amp, 0, 256, 20, 250);
+        fill(i, 255, 255);
+        var x = r * cos(angle);
+        var y = r * sin(angle);
+        stroke(i * 5, 255, 255);
+        line(0, 0, x, y);
+        vertex(x, y);
+        //var y = map(amp, 0, 256, height, 0);
+        //rect(i * w, y, w - 2, height - y);
+    }
+    endShape();
 }

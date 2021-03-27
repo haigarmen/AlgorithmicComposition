@@ -1,6 +1,6 @@
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    background(200);
+    background('#86a9e0');
     smooth();
     noStroke();
     noLoop();
@@ -11,10 +11,15 @@ function draw(){
     while (x < width) {
       var y = 0;
       while (y < height) {
-        fill(random(180,255),random(80,100),random(80,100));
-        rect(x, y, 60, 60);
-        y = y + 62;
+          if (random(100) < 1 ) {
+              fill(255, 0, 0, 150);
+            } else {
+              // but usually pick a random gray color
+              fill(random(100, 200),150);
+            }
+        ellipse(x+20, y+20, 40, 40);
+        y = y + 40;
       }
-      x = x + 62;
+      x = x + 40;
     }
 }

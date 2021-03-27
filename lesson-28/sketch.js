@@ -1,49 +1,49 @@
-var step = 10;
-var lastX = -10;
-var radius = 50;
-let lastY;
-let middle;
-let y;
+// Using FFT - Fast Fournier Transform to visualize sound
+
+var song;
+var button;
+var fft;
+var barWidth;
+
+var ampHistory = [];
+
+function preload() {
+    song = loadSound("../audio/drum-loop-120-bpm.mp3");
+}
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
-    background(208);
-    smooth();
-    // noLoop();
-    noFill();
-    strokeWeight(0.5);
+    createCanvas(windowWidth, windowHeight - 100);
+    angleMode(DEGREES);
+    colorMode(HSB);
+
+    slider = createSlider(0, 1, 0.5, 0.01);
+    button = createButton("Play");
+    button.mousePressed(togglePlay);
+    // song.loop();
+    fft = new p5.FFT(.6, 64);
+    barWidth = width / 64;
+}
+
+function togglePlay() {
+    if (!song.isPlaying()) {
+        song.loop();
+        button.html("Pause");
+    } else {
+        song.stop();
+        button.html("Play");
+    }
 }
 
 function draw() {
-    background(255);
-    stroke(20, 50, 70);
-    centX = width / 2;
-    centY = height / 2;
-    var x, y;
-    for (var i = 0; i < 100; i++) {
-        var lastx = -999;
-        var lasty = -999;
-        var radiusNoise = random(10);
-        var radius = 10;
+    background(0);
+    song.setVolume(slider.value());
+    var spectrum = fft.analyze()
+    console.log(spectrum);
 
-        stroke(random(20), random(50), random(70), 80);
-
-        var startangle = int(random(360));
-        var endangle = 1440 + int(random(3000));
-        var anglestep = 5 + int(random(3));
-
-        for (var ang = startangle; ang <= endangle; ang += anglestep) {
-            radiusNoise += 0.75;
-            radius += 0.75;
-            var thisRadius = radius + (noise(radiusNoise) * 200) - 100;
-            var rad = radians(ang);
-            x = centX + (thisRadius * cos(rad));
-            y = centY + (thisRadius * sin(rad));
-            if (lastx > -999) {
-                line(x, y, lastx, lasty);
-            }
-            lastx = x;
-            lasty = y;
-        }
+    for (var i = 0; i < spectrum.length; i++) {
+        var frqAmp = spectrum[i];
+        var y = map(frqAmp, 0, 256, height, 0);
+        fill(i * 2, 255, 255);
+        rect(i * barWidth, y, barWidth, height - y);
     }
 }
