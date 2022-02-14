@@ -1,70 +1,49 @@
-// global variables
-
-let num = 10;
-let angNoise, radiusNoise, xNoise, yNoise;
-let angle;
-let radius = 100;
-let strokeCol = 254;
-let strokeChange = -1;
-
-function clearBackground() {
-  background(0);
-}
+var step = 10;
+var lastX = -10;
+var radius = 50;
+let lastY;
+let middle;
+let y;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    background(0);
+    background(208);
     smooth();
     // noLoop();
     noFill();
     strokeWeight(0.5);
-    clearBackground();
-    angle = -PI/2;
-    angNoise = random(10);
-    radiusNoise = random(10);
-    xNoise = random(10);
-    yNoise = random(10);
 }
 
 function draw() {
-    radiusNoise += 0.005;
-    radius = (noise(radiusNoise) * 850) +1;
+    background(255);
+    stroke(20, 50, 70);
+    centX = width / 2;
+    centY = height / 2;
+    var x, y;
+    for (var i = 0; i < 100; i++) {
+        var lastx = -999;
+        var lasty = -999;
+        var radiusNoise = random(10);
+        var radius = 10;
 
-    angNoise += 0.005;
-    angle += (noise(angNoise) * 6) - 3;
-    if (angle > 360) { angle -= 360; }
-    if (angle < 0) { angle += 360; }
+        stroke(random(20), random(50), random(70), 80);
 
-    // wobble centre
-    xNoise += 0.01;
-    yNoise += 0.01;
-    let centreX = width/2 + (noise(xNoise) * 100) - 50;
-    let centreY = height/2 + (noise(yNoise) * 100) - 50;
+        var startangle = int(random(360));
+        var endangle = 1440 + int(random(3000));
+        var anglestep = 5 + int(random(3));
 
-    let rad = radians(angle);
-    let x1 = centreX + (radius * cos(rad));
-    let y1 = centreY + (radius * sin(rad));
-
-    // opposite end of line
-    let opprad = rad + PI;
-    let x2 = centreX + (radius * cos(opprad));
-    let y2 = centreY + (radius * sin(opprad));
-
-    noFill();
-    strokeCol += strokeChange;
-    if (strokeCol > 254) { strokeChange *= -1; }
-    if (strokeCol < 0) { strokeChange *= -1; }
-    stroke(strokeCol, 60);
-    strokeWeight(1);
-    line(x1, y1, x2, y2);
-
-    // disply the wandering centre visible
-    //fill(255,0,0,40);
-    //noStroke();
-    //ellipseMode(CENTER);
-    //ellipse(centreX, centreY, 2, 2);
-}
-
-function mousePressed() {
-  clearBackground();
+        for (var ang = startangle; ang <= endangle; ang += anglestep) {
+            radiusNoise += 0.75;
+            radius += 0.75;
+            var thisRadius = radius + (noise(radiusNoise) * 200) - 100;
+            var rad = radians(ang);
+            x = centX + (thisRadius * cos(rad));
+            y = centY + (thisRadius * sin(rad));
+            if (lastx > -999) {
+                line(x, y, lastx, lasty);
+            }
+            lastx = x;
+            lasty = y;
+        }
+    }
 }

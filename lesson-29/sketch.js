@@ -1,4 +1,4 @@
-// Using FFT with a Radial Visualization
+// Using FFT - Fast Fournier Transform to visualize sound
 
 var song;
 var button;
@@ -15,6 +15,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight - 100);
     angleMode(DEGREES);
     colorMode(HSB);
+
     slider = createSlider(0, 1, 0.5, 0.01);
     button = createButton("Play");
     button.mousePressed(togglePlay);
@@ -37,20 +38,12 @@ function draw() {
     background(0);
     song.setVolume(slider.value());
     var spectrum = fft.analyze()
-    translate(width / 2, height / 2)
-    beginShape();
+    console.log(spectrum);
+
     for (var i = 0; i < spectrum.length; i++) {
-        var angle = map(i, 0, spectrum.length, 0, 360);
-        var amp = spectrum[i];
-        var r = map(amp, 0, 256, 20, 250);
-        fill(i, 255, 255);
-        var x = r * cos(angle);
-        var y = r * sin(angle);
-        stroke(i * 5, 255, 255);
-        line(0, 0, x, y);
-        vertex(x, y);
-        //var y = map(amp, 0, 256, height, 0);
-        //rect(i * w, y, w - 2, height - y);
+        var frqAmp = spectrum[i];
+        var y = map(frqAmp, 0, 256, height, 0);
+        fill(i * 2, 255, 255);
+        rect(i * barWidth, y, barWidth, height - y);
     }
-    endShape();
 }
